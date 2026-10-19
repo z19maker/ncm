@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stanford's Next-Concept Modeling (NCM)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container py-5">
+        <!-- Header Section -->
+        <header class="mb-5 text-center">
+            <h1 class="display-4 fw-bold">Is Stanford's Next-Concept Modeling (NCM) the end of LLMs?</h1>
+            <p class="lead">It writes text 31x faster, but against which model, and does any of it reach your GPU?</p>
+            <p class="text-muted">October 19, 2026</p>
+        </header>
+
+        <div class="row">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/vLqswKyHS64?si=MSIMbZ9lQ5NlFPpC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <section class="mb-5">
+                    <p>Every chatbot you use, ChatGPT and Gemini included, writes one token at a time, and every token makes your GPU read the model's full weights out of memory. That is why large language models feel slow on your own machine. NCM, from Stanford and Together AI, skips that. It writes in levels, a rough sketch first and the words last, using a multiscale residual VQ-VAE and an ordinary transformer that fills a whole level per pass.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2 class="h3 mb-3">What's Inside</h2>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>VRAM Bottleneck:</strong> One token at a time means one full read of the weights. A 16 GB model writing 1,024 tokens moves about 16,000 GB, roughly 9 seconds of memory traffic on an RTX 5090 at 1,792 GB/s.</li>
+                        <li class="list-group-item"><strong>Sudoku Result:</strong> A 25M NCM solved 86% of hard boards, where a same-size word-by-word model solved 1%.</li>
+                        <li class="list-group-item"><strong>NCM vs Diffusion LLMs:</strong> Unlike Inception's Mercury and Google's DiffusionGemma (which rewrite drafts many times), NCM writes the outline once and the detail once.</li>
+                        <li class="list-group-item"><strong>The 31x Speed:</strong> Measured on 48-token XSum summaries, 8 passes vs 128 for the AURORA-LM diffusion model, on one H100 at batch 16. The paper never times NCM against a word-by-word model.</li>
+                        <li class="list-group-item"><strong>Architecture:</strong> The 88M generator needs a second 61M network (149M total), and the number of passes is fixed per model (8, 11, 32).</li>
+                        <li class="list-group-item"><strong>Weaknesses:</strong> Plain word-by-word wins in translation (25.2 vs 22.6 BLEU on German-to-English). NCM only ties at 132 passes against about 64.</li>
+                        <li class="list-group-item"><strong>Local AI Impact:</strong> 32 weight reads instead of 1,024 moves the bottleneck from memory bandwidth to compute, helping single-user batch size 1 more than data centers.</li>
+                        <li class="list-group-item"><strong>Limits:</strong> Fixed-size output box, 725M parameters max, evaluation-only code, CUDA only, and a web-text checkpoint that is a 5-byte TODO file.</li>
+                        <li class="list-group-item"><strong>DiffusionGemma:</strong> 25.2B total, 3.8B active, Apache 2.0, 15–20 tokens per pass, and 8–19 points behind Gemma 4 (AIME 2026 69.1 vs 88.3).</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2 class="h3 mb-3">Chapters</h2>
+                    <div class="row row-cols-1 row-cols-md-2 g-2">
+                        <div class="col"><span class="text-muted">0:00</span> The 2 AM cursor: why AI writes so slowly</div>
+                        <div class="col"><span class="text-muted">0:52</span> 31x faster? The post half a million people read</div>
+                        <div class="col"><span class="text-muted">2:00</span> One token, one full weight read</div>
+                        <div class="col"><span class="text-muted">4:13</span> 1% vs 86%: the Sudoku table</div>
+                        <div class="col"><span class="text-muted">5:55</span> How NCM works: sketch first, words last</div>
+                        <div class="col"><span class="text-muted">9:20</span> NCM vs diffusion language models</div>
+                        <div class="col"><span class="text-muted">11:40</span> What the 31x actually measures</div>
+                        <div class="col"><span class="text-muted">13:49</span> Translation: word by word still wins</div>
+                        <div class="col"><span class="text-muted">15:49</span> Count the weight reads on your GPU</div>
+                        <div class="col"><span class="text-muted">18:41</span> Why the data center doesn't need this</div>
+                        <div class="col"><span class="text-muted">20:39</span> Five bytes: what keeps NCM off your machine</div>
+                        <div class="col"><span class="text-muted">23:11</span> DiffusionGemma: what you can run tonight</div>
+                        <div class="col"><span class="text-muted">25:12</span> Verdict: buy bandwidth today, read the compute line</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Watch Next</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">The End of VRAM-Bottlenecked LLMs: Qwen3.8-Flash-Next</li>
+                            <li class="mb-2">The End of AI Hallucinations? Meta's New Fix (CLM's)</li>
+                            <li class="mb-2">Why Your Mac Is Slow at Local AI (And It's Not the Chip)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sources</h5>
+                        <ul class="list-unstyled small">
+                            <li><a href="https://arxiv.org/abs/2610.14162" class="text-decoration-none">NCM paper (arXiv 2610.14162)</a></li>
+                            <li><a href="https://github.com/HazyResearch/ncm" class="text-decoration-none">NCM code</a></li>
+                            <li><a href="https://huggingface.co/hazyresearch/n..." class="text-decoration-none">NCM checkpoints</a></li>
+                            <li><a href="https://hazyresearch.stanford.edu/blo..." class="text-decoration-none">Hazy Research blog</a></li>
+                            <li><a href="https://x.com/KumbongHermann/status/2..." class="text-decoration-none">Hermann Kumbong's launch thread</a></li>
+                            <li><a href="https://arxiv.org/abs/2412.08821" class="text-decoration-none">Meta Large Concept Models</a></li>
+                            <li><a href="https://www.inceptionlabs.ai/blog/int..." class="text-decoration-none">Inception Mercury</a></li>
+                            <li><a href="https://huggingface.co/google/diffusi..." class="text-decoration-none">DiffusionGemma model card</a></li>
+                            <li><a href="https://blog.google/innovation-and-ai..." class="text-decoration-none">Google DiffusionGemma blog</a></li>
+                            <li><a href="https://www.reddit.com/r/LocalLLaMA" class="text-decoration-none">ORL / LLaDA 2.1 mini on r/LocalLLaMA</a></li>
+                            <li><a href="https://en.wikipedia.org/wiki/GeForce..." class="text-decoration-none">RTX 50 series memory bandwidth</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
